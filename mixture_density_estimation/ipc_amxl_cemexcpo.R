@@ -33,8 +33,8 @@ plot(density(rate_of_returns), main="^MXX", col="red")
 hist(rate_of_returns, main="^MXX", freq=FALSE, add=TRUE, breaks=100)
 #plot(log(rate_of_returns), type="l", main="^MXX")
 
-valores <- em(rate_of_returns, c(mean(rate_of_returns), sd(rate_of_returns), 4*sd(rate_of_returns)))
-valores 
+ipc_values <- em(rate_of_returns, c(mean(rate_of_returns), sd(rate_of_returns), 4*sd(rate_of_returns)))
+ipc_values 
 
 
 # We pull the data from yahoo finance for the symbol AMXL.MX from 2010-04-15 to 2011-09-27
@@ -49,8 +49,8 @@ plot(density(rate_of_returns), main="AMXL MX", col="red")
 hist(rate_of_returns, breaks=100, main="AMXL MX", freq=FALSE, add=TRUE)
 #plot(log(rate_of_returns), type="l", main="AMXL MX")
 
-valores <- em(rate_of_returns, c(mean(rate_of_returns), sd(rate_of_returns), 4*sd(rate_of_returns)))
-valores 
+amxl.mx_values <- em(rate_of_returns, c(mean(rate_of_returns), sd(rate_of_returns), 4*sd(rate_of_returns)))
+amxl.mx_values
 
 
 # We pull the data from yahoo finance for the symbol CEMEXCPO.MX from 2010-04-15 to 2011-09-27
@@ -66,6 +66,6 @@ plot(density(rate_of_returns), main="CEMEX CPO", col="red")
 hist(rate_of_returns, breaks=100, main="CEMEX CPO", freq=FALSE, add=TRUE)
 #plot(log(rate_of_returns), type="l", main="CEMEX CPO")
 
-valores <- em(rate_of_returns, c(mean(rate_of_returns), sd(rate_of_returns), 4*sd(rate_of_returns)))
-valores 
+cemexcpo.mx_values <- em(rate_of_returns, c(mean(rate_of_returns), sd(rate_of_returns), 4*sd(rate_of_returns)))
+cemexcpo.mx_values
 
