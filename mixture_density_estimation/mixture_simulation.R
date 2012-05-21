@@ -1,13 +1,13 @@
 # This is just to make a simulation and try the results.
 
 set.seed(34356)
-a <- rnorm(1000, 0, 0.5)
-b <- rnorm(1000, 0, 4)
+a <- rnorm(1000, 0, 3)
+b <- rnorm(1000, 0, 10)
 d <- c(sample(a, 350), sample(b, 650))
 
-plot(density(a), xlim=c(-2.5, 2.5), ylim=c(0, 2.3), col="green")
-lines(density(b), xlim=c(-2.5, 2.5), ylim=c(0, 2.3), col="green")
-lines(density(d), xlim=c(-2.5, 2.5), ylim=c(0, 2.3), col="blue")
+plot(density(a), col="green")
+lines(density(b), col="green")
+lines(density(d), col="blue")
 
 em <- function(datos, params)
 {
@@ -24,14 +24,16 @@ em <- function(datos, params)
     params[2] = sqrt(sum(p * datos^2) / sum(p))
     params[3] = sqrt(sum((1 - p) * datos^2) / sum(1 - p))
   }
-  return(params)
+  params_list <- list("alfa"=params[1], "sigma_zero"=params[2], "sigma_one"=params[3])
+  return(params_list)
 }
+
 
 valores <- em(d, c(mean(d), sd(d), 4*sd(d)))
 valores 
 
-a <- rnorm(1000, 0, valores[2])
-b <- rnorm(1000, 0, valores[3])
-d <- c(sample(a, floor(valores[1]*1000)), sample(b, floor(valores[1]*1000)))
+a <- rnorm(1000, 0, valores$sigma_zero)
+b <- rnorm(1000, 0, valores$sigma_one)
+d <- c(sample(a, floor(valores$alfa*1000)), sample(b, floor(1000 - valores$alfa*1000)))
 
-lines(density(d), xlim=c(-2.5, 2.5), ylim=c(0, 2.3), col="red")
+lines(density(d), col="red")
