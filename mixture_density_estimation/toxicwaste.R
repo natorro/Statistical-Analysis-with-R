@@ -5,24 +5,6 @@
 #	value <- (1/sigma*sqrt(2*pi)) * exp((-1/2)*(((x-mu)/sigma)^2))
 #}
 
-#em <- function(datos, params)
-#{
-#  paramsP <- c(-9,-9,-9)
-#  while(sum(paramsP-params)^2 > (0.001^2))
-#  {
-#    paramsP <- params
-    #E
-#    p=params[1] * dnorm(datos, sd=params[2])/
-#      (params[1] * dnorm(datos, sd=params[2]) + 
-#      (1 - params[1]) * dnorm(datos, sd=params[3]))
-    #M
-#    params[1] = mean(p)
-#    params[2] = sqrt(sum(p * datos^2) / sum(p))
-#    params[3] = sqrt(sum((1 - p) * datos^2) / sum(1 - p))
-#  }
-#  params_list <- list("alfa"=params[1], "sigma_zero"=params[2], "sigma_one"=params[3])
-#  return(params_list)
-#}
 
 
 
@@ -78,4 +60,36 @@ hola
 
 #g <- c(rep(1, length(log_rate_of_returns)), rep(2, length(mynormal))) 
 #Ecdf(c(log_rate_of_returns, mynormal), group=g, col=c('blue', 'orange'))
+
+# Recreate a normal vector with the same number of elements as the log-returns
+# using the same mean and sd from the data
+
+mynormal <- rnorm(length(log_rate_of_returns), mean(log_rate_of_returns), sd(log_rate_of_returns))
+
+# Generate random numbers from the mixture
+mymixturedata <- rnormmix(length(log_rate_of_returns), lambda=ipc_values_EM$lambda, 
+                          mu=ipc_values_EM$mu, sigma=ipc_values_EM$sigma)
+
+mymixturedata2 <- rnormmix(length(log_rate_of_returns), lambda=c(values$alfa, 1-values$alfa), 
+                          mu=c(0,0), sigma=c(values$sigma_zero, values$sigma_one))
+
+
+# Graph both empirical data
+# This is used to plot the empirical distribution of simulated data from the mixtures
+#Ecdf(mymixturedata, lty=2, lwd=2, col="blue", add=TRUE)
+#Ecdf(mymixturedata2, lty=2, lwd=2, col="red", add=TRUE)
+# tests  to check if the data from upside is the same
+ks.test(log_rate_of_returns, rnorm(10000, mean(log_rate_of_returns), sd(log_rate_of_returns)))
+ks.test(log_rate_of_returns, mymixturedata)
+ks.test(log_rate_of_returns, mymixturedata2)
+ks.test(mymixturedata, mymixturedata2)
+
+# Graph 05 
+# The histogram with the two components of the mixture and the mixture this plot comes from the package
+#plot(ipc_values_EM, which=2, breaks=25)
+# This plots a empirical density
+#lines(density(log_rate_of_returns), lty=2, lwd=2)
+#curve(ipc_values_EM$lambda[1] * dnorm(x, ipc_values_EM$mu[1], ipc_values_EM$sigma[1]) +
+#      ipc_values_EM$lambda[2] * dnorm(x, ipc_values_EM$mu[2], ipc_values_EM$sigma[2]), 
+#      from=-0.10, to=0.07, add=TRUE, col="blue")
 
